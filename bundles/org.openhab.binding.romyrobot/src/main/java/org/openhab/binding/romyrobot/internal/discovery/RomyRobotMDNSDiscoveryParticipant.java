@@ -15,7 +15,7 @@ package org.openhab.binding.romyrobot.internal.discovery;
 import static org.openhab.binding.romyrobot.internal.RomyRobotBindingConstants.*;
 import static org.openhab.core.thing.Thing.*;
 
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Set;
 
 import javax.jmdns.ServiceInfo;
@@ -63,14 +63,12 @@ public class RomyRobotMDNSDiscoveryParticipant implements MDNSDiscoveryParticipa
 
     @Override
     public Set<ThingTypeUID> getSupportedThingTypeUIDs() {
-        Set<ThingTypeUID> supportedThingTypeUIDs = new HashSet<>();
-        supportedThingTypeUIDs.add(ROMYROBOT_DEVICE);
-        return supportedThingTypeUIDs;
+        return Collections.emptySet();
     }
 
     @Override
     public @Nullable ThingUID getThingUID(ServiceInfo service) {
-        return new ThingUID(ROMYROBOT_DEVICE, service.getName());
+        return new ThingUID(THING_TYPE_ROMY, "");
     }
 
     @Override
@@ -81,7 +79,6 @@ public class RomyRobotMDNSDiscoveryParticipant implements MDNSDiscoveryParticipa
             logger.error("uid is null!");
             return null;
         }
-
         logger.info("Discovered ROMY vacuum cleaner robot: {}", service);
 
         // get IP address
@@ -89,18 +86,20 @@ public class RomyRobotMDNSDiscoveryParticipant implements MDNSDiscoveryParticipa
         String robotname = "";
         String[] hostAddresses = service.getHostAddresses();
 
+        if ((hostAddresses == null) || (hostAddresses.length > 0)) {
+            logger.error("ROMY discovered empty IP via MDNS!");
+            return null;
+        }
         logger.info("hostAddresses: {}", hostAddresses);
 
-        if ((hostAddresses != null) && (hostAddresses.length > 0)) {
-            address = hostAddresses[0];
+        address = hostAddresses[0];
+        if (address.isEmpty()) {
+            logger.error("ROMY discovered empty IP via MDNS!");
+            return null;
         }
+        logger.info("address: {}", address);
 
         /*
-         * if (address.isEmpty()) {
-         * logger.error("ROMY discovered empty IP via MDNS!");
-         * return null;
-         * }
-         * 
          * try {
          * RomyRobotConfiguration config = new RomyRobotConfiguration();
          * config.hostname = address;
@@ -115,7 +114,6 @@ public class RomyRobotMDNSDiscoveryParticipant implements MDNSDiscoveryParticipa
          * }
          */
 
-        logger.error("blub123");
         return DiscoveryResultBuilder.create(uid).withProperty(PROPERTY_SERIAL_NUMBER, service.getName())
                 .withLabel("robotname").withRepresentationProperty(PROPERTY_SERIAL_NUMBER).build();
     }

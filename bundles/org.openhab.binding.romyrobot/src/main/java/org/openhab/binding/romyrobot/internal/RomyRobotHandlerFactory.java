@@ -12,10 +12,6 @@
  */
 package org.openhab.binding.romyrobot.internal;
 
-import static org.openhab.binding.romyrobot.internal.RomyRobotBindingConstants.ROMYROBOT_DEVICE;
-
-import java.util.Set;
-
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.romyrobot.internal.api.RomyApiFactory;
@@ -40,7 +36,10 @@ import org.slf4j.LoggerFactory;
 @Component(configurationPid = "binding.romyrobot", service = ThingHandlerFactory.class)
 public class RomyRobotHandlerFactory extends BaseThingHandlerFactory {
 
-    private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Set.of(ROMYROBOT_DEVICE);
+    private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Set.of(THING_TYPE_ROMY);
+    // private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Set
+    // .of(GenericBindingConstants.THING_TYPE_GENERIC);
+
     private RomyApiFactory apiFactory;
     private RomyRobotStateDescriptionOptionsProvider stateDescriptionProvider;
     private final Logger logger = LoggerFactory.getLogger(RomyRobotHandlerFactory.class);
@@ -59,14 +58,11 @@ public class RomyRobotHandlerFactory extends BaseThingHandlerFactory {
 
     @Override
     protected @Nullable ThingHandler createHandler(Thing thing) {
-        ThingTypeUID thingTypeUID = thing.getThingTypeUID();
 
-        if (ROMYROBOT_DEVICE.equals(thingTypeUID)) {
-            try {
-                return new RomyRobotHandler(thing, apiFactory, stateDescriptionProvider);
-            } catch (Exception e) {
-                logger.error("could not create handler {}", e);
-            }
+        try {
+            return new RomyRobotHandler(thing, apiFactory, stateDescriptionProvider);
+        } catch (Exception e) {
+            logger.error("could not create handler {}", e);
         }
 
         return null;
