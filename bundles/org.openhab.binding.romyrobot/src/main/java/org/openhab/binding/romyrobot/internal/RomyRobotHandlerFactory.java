@@ -12,7 +12,7 @@
  */
 package org.openhab.binding.romyrobot.internal;
 
-import static org.openhab.binding.romyrobot.internal.RomyRobotBindingConstants.SUPPORTED_THING_TYPES_UIDS;
+import static org.openhab.binding.romyrobot.internal.RomyRobotBindingConstants.*;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
@@ -51,14 +51,22 @@ public class RomyRobotHandlerFactory extends BaseThingHandlerFactory {
 
     @Override
     public boolean supportsThingType(ThingTypeUID thingTypeUID) {
+        logger.error("ROMY supportsThingType  thingTypeUID={}", thingTypeUID);
         return SUPPORTED_THING_TYPES_UIDS.contains(thingTypeUID);
     }
 
     @Override
     protected @Nullable ThingHandler createHandler(Thing thing) {
 
+        logger.error("thingTypeUID {} is not supported!");
+
+        ThingTypeUID thingTypeUID = thing.getThingTypeUID();
         try {
-            return new RomyRobotHandler(thing, apiFactory, stateDescriptionProvider);
+            if (thingTypeUID.equals(THING_TYPE_ROMY)) {
+                return new RomyRobotHandler(thing, apiFactory, stateDescriptionProvider);
+            } else {
+                logger.error("thingTypeUID {} is not supported!", thingTypeUID);
+            }
         } catch (Exception e) {
             logger.error("could not create handler {}", e);
         }

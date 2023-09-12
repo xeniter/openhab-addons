@@ -62,52 +62,97 @@ public class RomyRobotMDNSDiscoveryParticipant implements MDNSDiscoveryParticipa
 
     @Override
     public Set<ThingTypeUID> getSupportedThingTypeUIDs() {
+        logger.error("ROMY -> getSupportedThingTypeUIDs: {}", SUPPORTED_THING_TYPES_UIDS);
         return SUPPORTED_THING_TYPES_UIDS;
     }
 
     @Override
     public @Nullable ThingUID getThingUID(ServiceInfo service) throws IllegalArgumentException {
-        // return new ThingUID(THING_TYPE_ROMY, "");
-        if (service == null) {
-            throw new IllegalArgumentException("service must not be null!");
-        }
-        logger.error("ROMY -> getThingUID: ServiceInfo={}", service);
-        String serviceName = service.getName();
-        if (serviceName == null) {
-            throw new IllegalArgumentException("serviceName must not be null!");
-        }
-        logger.error("ROMY -> getThingUID: serviceName={}", serviceName);
-
-        return null;
+        /*
+         * if (service == null) {
+         * throw new IllegalArgumentException("service must not be null!");
+         * }
+         * logger.debug("ROMY -> getThingUID: ServiceInfo={}", service);
+         * 
+         * String serviceName = service.getName();
+         * if (serviceName == null) {
+         * throw new IllegalArgumentException("serviceName must not be null!");
+         * }
+         * logger.debug("ROMY -> getThingUID: serviceName={}", serviceName);
+         * 
+         * return new ThingUID(THING_TYPE_ROMY, serviceName); // serviceName is uniqueID
+         */
+        return new ThingUID(THING_TYPE_ROMY, "aicu");
     }
 
     @Override
     public @Nullable DiscoveryResult createResult(ServiceInfo service) {
 
-        final ThingUID uid = getThingUID(service);
-        if (uid == null) {
-            logger.error("uid is null!");
+        if (service == null) {
+            logger.error("service is null!");
             return null;
         }
         logger.info("Discovered ROMY vacuum cleaner robot: {}", service);
 
         // get IP address
+        // -----------------
         String address = "";
-        String robotname = "";
         String[] hostAddresses = service.getHostAddresses();
 
-        if ((hostAddresses == null) || (hostAddresses.length > 0)) {
+        if ((hostAddresses == null) || (hostAddresses.length == 0)) {
             logger.error("ROMY discovered empty IP via MDNS!");
             return null;
         }
-        logger.info("hostAddresses: {}", hostAddresses);
+        logger.debug("hostAddresses: {}", hostAddresses);
 
         address = hostAddresses[0];
         if (address.isEmpty()) {
             logger.error("ROMY discovered empty IP via MDNS!");
             return null;
         }
-        logger.info("address: {}", address);
+        logger.debug("address: {}", address);
+
+        final ThingUID uid = getThingUID(service);
+        if (uid == null) {
+            logger.error("uid is null!");
+            return null;
+        }
+
+        /*
+         * String uniqueID = service.getName();
+         * if (uniqueID.isEmpty()) {
+         * logger.error("ROMY discovered empty ServiceName via MDNS!");
+         * return null;
+         * }
+         * final ThingUID uid = new ThingUID(THING_TYPE_ROMY, uniqueID);
+         */
+
+        /*
+         * final ThingUID uid = getThingUID(service);
+         * if (uid == null) {
+         * logger.error("uid is null!");
+         * return null;
+         * }
+         * logger.info("Discovered ROMY vacuum cleaner robot: {}", service);
+         * 
+         * // get IP address
+         * String address = "";
+         * String robotname = "";
+         * String[] hostAddresses = service.getHostAddresses();
+         * 
+         * if ((hostAddresses == null) || (hostAddresses.length > 0)) {
+         * logger.error("ROMY discovered empty IP via MDNS!");
+         * return null;
+         * }
+         * logger.info("hostAddresses: {}", hostAddresses);
+         * 
+         * address = hostAddresses[0];
+         * if (address.isEmpty()) {
+         * logger.error("ROMY discovered empty IP via MDNS!");
+         * return null;
+         * }
+         * logger.info("address: {}", address);
+         */
 
         /*
          * try {
@@ -124,7 +169,15 @@ public class RomyRobotMDNSDiscoveryParticipant implements MDNSDiscoveryParticipa
          * }
          */
 
+        String Label = "ROMY (" + address + "/" + service.getName() + ")";
+
         return DiscoveryResultBuilder.create(uid).withProperty(PROPERTY_SERIAL_NUMBER, service.getName())
-                .withLabel("robotname").withRepresentationProperty(PROPERTY_SERIAL_NUMBER).build();
+                .withLabel(Label).withRepresentationProperty(PROPERTY_SERIAL_NUMBER).build();
+        // withProperties()
+
+        // return DiscoveryResultBuilder.create(uid).withProperty(PROPERTY_SERIAL_NUMBER, service.getName())
+        // .withLabel("robotname").withRepresentationProperty(PROPERTY_SERIAL_NUMBER).build();
+
+        // return DiscoveryResultBuilder.create(uid).build();
     }
 }
