@@ -12,6 +12,8 @@
  */
 package org.openhab.binding.romyrobot.internal;
 
+import static org.openhab.binding.romyrobot.internal.RomyRobotBindingConstants.SUPPORTED_THING_TYPES_UIDS;
+
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.romyrobot.internal.api.RomyApiFactory;
@@ -35,10 +37,6 @@ import org.slf4j.LoggerFactory;
 @NonNullByDefault
 @Component(configurationPid = "binding.romyrobot", service = ThingHandlerFactory.class)
 public class RomyRobotHandlerFactory extends BaseThingHandlerFactory {
-
-    private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Set.of(THING_TYPE_ROMY);
-    // private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Set
-    // .of(GenericBindingConstants.THING_TYPE_GENERIC);
 
     private RomyApiFactory apiFactory;
     private RomyRobotStateDescriptionOptionsProvider stateDescriptionProvider;

@@ -15,7 +15,6 @@ package org.openhab.binding.romyrobot.internal.discovery;
 import static org.openhab.binding.romyrobot.internal.RomyRobotBindingConstants.*;
 import static org.openhab.core.thing.Thing.*;
 
-import java.util.Collections;
 import java.util.Set;
 
 import javax.jmdns.ServiceInfo;
@@ -63,12 +62,23 @@ public class RomyRobotMDNSDiscoveryParticipant implements MDNSDiscoveryParticipa
 
     @Override
     public Set<ThingTypeUID> getSupportedThingTypeUIDs() {
-        return Collections.emptySet();
+        return SUPPORTED_THING_TYPES_UIDS;
     }
 
     @Override
-    public @Nullable ThingUID getThingUID(ServiceInfo service) {
-        return new ThingUID(THING_TYPE_ROMY, "");
+    public @Nullable ThingUID getThingUID(ServiceInfo service) throws IllegalArgumentException {
+        // return new ThingUID(THING_TYPE_ROMY, "");
+        if (service == null) {
+            throw new IllegalArgumentException("service must not be null!");
+        }
+        logger.error("ROMY -> getThingUID: ServiceInfo={}", service);
+        String serviceName = service.getName();
+        if (serviceName == null) {
+            throw new IllegalArgumentException("serviceName must not be null!");
+        }
+        logger.error("ROMY -> getThingUID: serviceName={}", serviceName);
+
+        return null;
     }
 
     @Override

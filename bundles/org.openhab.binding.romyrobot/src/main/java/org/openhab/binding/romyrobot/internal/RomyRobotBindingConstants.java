@@ -12,7 +12,10 @@
  */
 package org.openhab.binding.romyrobot.internal;
 
+import java.util.Set;
+
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.openhab.core.thing.ThingTypeUID;
 
 /**
  * The {@link romyRobotBindingConstants} class defines common constants, which are
@@ -26,6 +29,7 @@ public class RomyRobotBindingConstants {
     private static final String BINDING_ID = "romyrobot";
     // List of all Thing Type UIDs
     public static final ThingTypeUID THING_TYPE_ROMY = new ThingTypeUID(BINDING_ID, "aicu");
+    public static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Set.of(THING_TYPE_ROMY);
 
     // List of all Channel ids
 
