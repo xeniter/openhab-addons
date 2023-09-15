@@ -184,8 +184,12 @@ public class ShellyDiscoveryParticipant implements MDNSDiscoveryParticipant {
                 logger.debug("{}: Adding Shelly {}, UID={}", name, deviceName, thingUID.getAsString());
                 String thingLabel = deviceName.isEmpty() ? name + " - " + address
                         : deviceName + " (" + name + "@" + address + ")";
-                return DiscoveryResultBuilder.create(thingUID).withProperties(properties).withLabel(thingLabel)
-                        .withRepresentationProperty(PROPERTY_DEV_NAME).build();
+
+                DiscoveryResult discoveredResult = DiscoveryResultBuilder.create(thingUID).withProperties(properties)
+                        .withLabel(thingLabel).withRepresentationProperty(PROPERTY_DEV_NAME).build();
+
+                logger.error("Shelly DiscoveryResult: {}", discoveredResult);
+                return discoveredResult;
             }
         } catch (IOException | NullPointerException e) {
             // maybe some format description was buggy

@@ -13,4 +13,5 @@ mvn clean install -DskipChecks
 #mvn clean install -DskipChecks
 
 cp /home/mdipolt/gits/openhab-addons/bundles/org.openhab.binding.romyrobot/target/org.openhab.binding.romyrobot-4.1.0-SNAPSHOT.jar /home/mdipolt/Downloads/openhab/addons/
+#cp /home/mdipolt/gits/openhab-addons/bundles/org.openhab.binding.romyrobot/target/org.openhab.binding.romyrobot-4.0.0-SNAPSHOT.jar /home/mdipolt/Downloads/openhab/addons/
 /home/mdipolt/Downloads/openhab/start.sh debug

@@ -171,8 +171,16 @@ public class RomyRobotMDNSDiscoveryParticipant implements MDNSDiscoveryParticipa
 
         String Label = "ROMY (" + address + "/" + service.getName() + ")";
 
-        return DiscoveryResultBuilder.create(uid).withProperty(PROPERTY_SERIAL_NUMBER, service.getName())
+        DiscoveryResult discoveryResult = DiscoveryResultBuilder.create(uid)
+                .withProperty(PROPERTY_SERIAL_NUMBER, service.getName()).withProperty("deviceType", "aicu")
                 .withLabel(Label).withRepresentationProperty(PROPERTY_SERIAL_NUMBER).build();
+
+        // .withProperty(PROPERTY_SERIAL_NUMBER, service.getName()).withProperty(PROPERTY_DEV_TYPE, "aicu")
+
+        logger.error("discoveryResult: {}", discoveryResult);
+
+        return discoveryResult;
+
         // withProperties()
 
         // return DiscoveryResultBuilder.create(uid).withProperty(PROPERTY_SERIAL_NUMBER, service.getName())

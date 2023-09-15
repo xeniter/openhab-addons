@@ -51,7 +51,10 @@ public class RomyRobotHandlerFactory extends BaseThingHandlerFactory {
 
     @Override
     public boolean supportsThingType(ThingTypeUID thingTypeUID) {
-        logger.error("ROMY supportsThingType  thingTypeUID={}", thingTypeUID);
+        logger.error("### supportsThingType()");
+        logger.error("thingTypeUID={}", thingTypeUID);
+        logger.error("SUPPORTED_THING_TYPES_UIDS={}", SUPPORTED_THING_TYPES_UIDS);
+        logger.error("contains: {}", SUPPORTED_THING_TYPES_UIDS.contains(thingTypeUID));
         return SUPPORTED_THING_TYPES_UIDS.contains(thingTypeUID);
     }
 
